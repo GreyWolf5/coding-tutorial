@@ -1,6 +1,12 @@
 import io.kotlintest.matchers.collections.shouldContain
+import io.kotlintest.matchers.numerics.shouldBeGreaterThanOrEqual
+import io.kotlintest.matchers.numerics.shouldBeInRange
 import io.kotlintest.matchers.numerics.shouldBeLessThan
+import io.kotlintest.matchers.numerics.shouldNotBeInRange
 import io.kotlintest.shouldBe
+import io.kotlintest.shouldHave
+import io.kotlintest.shouldNot
+import io.kotlintest.shouldNotBe
 import io.kotlintest.specs.FeatureSpec
 
 class BasicsFeatureSpec : FeatureSpec({
@@ -12,6 +18,9 @@ class BasicsFeatureSpec : FeatureSpec({
             sum1(a, b) shouldBeLessThan 4
             sum1(0, 3) shouldBe 3
             sum1(-1, 1) shouldBe 0
+            sum1(3,8) shouldBeGreaterThanOrEqual 10
+            sum1(7,8) shouldBeInRange 10..20
+            sum1(2,6) shouldNotBeInRange 2..6
             // Add greater less checks
         }
     }
@@ -66,6 +75,10 @@ class BasicsFeatureSpec : FeatureSpec({
     feature("when expression") {
         describe(1) shouldBe "One"
         describe("hello") shouldBe "Unknown"
+        describe(10L) shouldBe "Long"
+        describe(10) shouldNotBe  "Long"
+        describe("abc") shouldNotBe  null
+
         // Add other checks
     }
 
@@ -88,6 +101,16 @@ fun sum1(a: Int, b: Int): Int {
 fun sum2(a: Int, b: Int) = a + b
 
 fun maxOf(a: Int, b: Int) = if (a > b) a else b
+
+fun maxOf(a: Int, b: Int, c: Int) : Int {
+    return maxOf((maxOf(a, b)), c)
+}
+
+fun minOf(a: Int, b: Int) = if (a < b) a else b
+
+fun minOf(a: Int, b: Int, c: Int) : Int {
+    return minOf((minOf(a,b)),c)
+}
 
 fun minOf(a: Double, b: Double): Any {
     if (a < b) return a

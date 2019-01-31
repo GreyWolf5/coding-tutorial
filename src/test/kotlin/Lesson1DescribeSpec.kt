@@ -1,6 +1,10 @@
 import io.kotlintest.matchers.collections.shouldContain
+import io.kotlintest.matchers.numerics.shouldBeGreaterThan
+import io.kotlintest.matchers.numerics.shouldBeInRange
 import io.kotlintest.matchers.numerics.shouldBeLessThan
+import io.kotlintest.matchers.numerics.shouldBeLessThanOrEqual
 import io.kotlintest.shouldBe
+import io.kotlintest.shouldNotBe
 import io.kotlintest.specs.DescribeSpec
 
 class BasicsDescribeSpec : DescribeSpec({
@@ -13,6 +17,9 @@ class BasicsDescribeSpec : DescribeSpec({
                 sum1(a, b) shouldBeLessThan 4
                 sum1(0, 3) shouldBe 3
                 sum1(-1, 1) shouldBe 0
+                sum1(5,3) shouldBeGreaterThan 7
+                sum1(3,4) shouldBeInRange 6..8
+                sum1(2,9) shouldBeLessThanOrEqual 11
                 // Add greater less checks
             }
         }
@@ -67,6 +74,10 @@ class BasicsDescribeSpec : DescribeSpec({
         context("when expression") {
             describe(1) shouldBe "One"
             describe("hello") shouldBe "Unknown"
+            describe(10L) shouldBe "Long"
+            describe(10) shouldNotBe  "Long"
+            describe("abc") shouldNotBe  null
+
             // Add other checks
         }
 
