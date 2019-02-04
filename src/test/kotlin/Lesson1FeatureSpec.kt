@@ -67,6 +67,7 @@ class BasicsFeatureSpec : FeatureSpec({
 
         scenario("") {
             minOf(1, 2)
+            minOf(7,6,20,15,16,6,4) shouldBe 4
         }
     }
 
@@ -83,15 +84,28 @@ class BasicsFeatureSpec : FeatureSpec({
     }
 
     feature("collections") {
-        val fruits = arrayListOf("Apple", "Orange", "Grapes", "Cherry")
+        val fruits = arrayListOf("Apple", "Orange", "Grapes", "Cherry", "Orange", "oRanGe", "APPLE")
+        val cars = arrayListOf<String>()
+        val cats = arrayListOf("Sharky" , "Snow", "Bella", "Sunny", "Snоw", "Барсик") //Add cyrillic symbol
 
         scenario("") {
-            fruits.count() shouldBe 4
+            fruits.count() shouldBe 7
             fruits shouldContain "Apple"
+            count(fruits) shouldBe 7
 
-            count(fruits) shouldBe 4
+            print(fruits)
+            print(listToMap(fruits))
+            println()
+            print(cars)
+            print(listToMap(cars))
+            println()
+            print(cats)
+            print(listToMap(cats))
+            println()
         }
     }
+
+
 })
 
 fun sum1(a: Int, b: Int): Int {
@@ -106,10 +120,20 @@ fun maxOf(a: Int, b: Int, c: Int) : Int {
     return maxOf((maxOf(a, b)), c)
 }
 
-fun minOf(a: Int, b: Int) = if (a < b) a else b
+/*
+fun minOf(list: List<Int> ) : Int{
+    var min: Int = list[0]
+    for (i in list){
+        if (i<min) min=i
+    }
+    return min
+}
+*/
 
-fun minOf(a: Int, b: Int, c: Int) : Int {
-    return minOf((minOf(a,b)),c)
+fun minOf(vararg number: Int): Int {
+    var min = number[0]
+    number.forEach { if (it<min) min=it  }
+    return min
 }
 
 fun minOf(a: Double, b: Double): Any {
@@ -132,4 +156,31 @@ fun count(list: ArrayList<String>): Int {
         counter += 1
     }
     return counter
+}
+
+fun listToMap(list:List<String>): Map<String,Int>{
+    var Result: MutableMap<String,Int> = mutableMapOf()
+    var items: MutableList<String> = mutableListOf<String>()
+    list.forEach { items.add(it.toLowerCase()) }
+    if (items.isNotEmpty()){
+        items.forEach {
+            if(Result.containsKey(it)) {
+                var a:Int = Result.getValue(it)
+                Result.set(it,++a)
+            } else{
+                Result.put(it,1)
+            }
+        }
+    }
+    return  Result
+}
+fun print (list:List<String>){
+    list.forEach { println(it) }
+}
+
+fun print (map: Map<String,Int>){
+    map.forEach{
+        k, v ->
+        println("$k = $v")
+    }
 }
