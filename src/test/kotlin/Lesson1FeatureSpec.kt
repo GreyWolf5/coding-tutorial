@@ -9,6 +9,8 @@ import io.kotlintest.shouldNot
 import io.kotlintest.shouldNotBe
 import io.kotlintest.specs.FeatureSpec
 
+
+
 class BasicsFeatureSpec : FeatureSpec({
     feature("functions") {
         scenario("sum1 and sum2 works the same") {
@@ -66,8 +68,20 @@ class BasicsFeatureSpec : FeatureSpec({
         }
 
         scenario("") {
-            minOf(1, 2)
-            minOf(7,6,20,15,16,6,4) shouldBe 4
+            minOf() shouldBe null
+            minOf(9) shouldBe 9
+            minOf(7,6,20,15,16,6,4,Int.MIN_VALUE,45) shouldBe Int.MIN_VALUE
+            minOf(4,25,-55,12,26,6,Int.MIN_VALUE,Int.MIN_VALUE+1,Int.MIN_VALUE+2) shouldBe Int.MIN_VALUE
+            minOf(3,2,7,Int.MAX_VALUE+2) shouldBe Int.MIN_VALUE+1
+            minOf(7,5,15,0,4,12,19,7,18,9) shouldBe 0
+            minOf(-5,5,-2,15,7,-4,25) shouldBe -5
+            minOf(15,12,7,9,4,3,7,25,1) shouldBe 1
+            minOf(4,7,4,5,4,9,7,5,6,8,12,4,12,4,15,25,6,4,7,8,4) shouldBe 4
+            minOf(7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7) shouldBe 7
+            minOf(7_524_597,6_574_752,8_656_741) shouldBe 6574752
+            minOf(7_524_597,6_574_752,8_656_741) shouldBe 6_574_752
+            minOf(*generateNumbers(3,10)) shouldBe 3
+            // Попробовать передать массив нулей arrayOfNulls()
         }
     }
 
@@ -92,7 +106,7 @@ class BasicsFeatureSpec : FeatureSpec({
             fruits.count() shouldBe 7
             fruits shouldContain "Apple"
             count(fruits) shouldBe 7
-
+/*
             print(fruits)
             print(listToMap(fruits))
             println()
@@ -101,7 +115,7 @@ class BasicsFeatureSpec : FeatureSpec({
             println()
             print(cats)
             print(listToMap(cats))
-            println()
+            println()*/
         }
     }
 
@@ -130,10 +144,12 @@ fun minOf(list: List<Int> ) : Int{
 }
 */
 
-fun minOf(vararg number: Int): Int {
-    var min = number[0]
-    number.forEach { if (it<min) min=it  }
-    return min
+fun minOf(vararg numbers: Int): Int? {
+    if (numbers.isNotEmpty()){
+        var min = numbers[0]
+        numbers.forEach { if (it<min) min=it  }
+        return min}
+    return null
 }
 
 fun minOf(a: Double, b: Double): Any {
@@ -184,3 +200,23 @@ fun print (map: Map<String,Int>){
         println("$k = $v")
     }
 }
+
+fun print (arr: IntArray){
+    arr.forEach { println(it) }
+}
+
+fun generateNumbers (minimum: Int, count:Int) :IntArray {
+    var result = IntArray (count)
+    var upperBound = (minimum..Int.MAX_VALUE).random()
+    for (i in 0..result.size-1){
+        result[i]=(minimum..upperBound).random()
+    }
+    result[(0..result.size-1).random()]=minimum
+    return result
+}
+
+fun generateNumbers (minimum: Int) = generateNumbers (minimum, (3..100).random())
+
+fun generateNumbers () = generateNumbers ((Int.MIN_VALUE..Int.MAX_VALUE).random(), (3..100).random())
+
+
